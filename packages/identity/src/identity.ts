@@ -1,8 +1,6 @@
 import { 
   generateKeyPair, 
-  signTransaction, 
-  hashData,
-  type KeyPair,
+  signTransaction,
   type Transaction,
 } from '@clawrrency/core';
 import { 

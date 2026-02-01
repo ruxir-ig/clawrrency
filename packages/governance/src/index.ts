@@ -1,1 +1,1 @@
-export * from './governance.js';
+export * from './github.js';
