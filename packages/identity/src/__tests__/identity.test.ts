@@ -9,7 +9,7 @@ describe('Identity System', () => {
   let tempDir: string;
 
   beforeEach(async () => {
-    tempDir = path.join(os.tmpdir(), `clawrrency-test-${Date.now()}`);
+    tempDir = path.join(os.tmpdir(), `clawrrency-test-${Date.now()}-${Math.random().toString(36).slice(2)}`);
     const storagePath = path.join(tempDir, 'identities.json');
     manager = new IdentityManager(storagePath);
     await manager.initialize();
