@@ -11,8 +11,11 @@ import { sha512 } from '@noble/hashes/sha512';
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 
 // Configure ed25519 to use sha512
-ed25519.etc.sha512Sync = (...msgs) => sha512(ed25519.etc.concatBytes(...msgs));
-ed25519.etc.sha512Async = (...msgs) => Promise.resolve(ed25519.etc.sha512Sync(...msgs));
+const etc = ed25519.etc;
+if (etc) {
+  (etc as { sha512Sync: unknown }).sha512Sync = (...msgs: Uint8Array[]) => sha512(etc.concatBytes(...msgs));
+  (etc as { sha512Async: unknown }).sha512Async = (...msgs: Uint8Array[]) => Promise.resolve(etc.sha512Sync(...msgs));
+}
 
 // Re-export noble utilities
 export { ed25519, sha256, sha512, bytesToHex, hexToBytes };
@@ -110,7 +113,7 @@ export function hashData(data: string | Uint8Array | object): string {
  * - Consistent number formatting
  */
 export function canonicalJson(obj: unknown): string {
-  return JSON.stringify(obj, (key, value) => {
+  return JSON.stringify(obj, (_, value) => {
     // Sort object keys
     if (value && typeof value === 'object' && !Array.isArray(value)) {
       return Object.keys(value).sort().reduce((sorted, k) => {

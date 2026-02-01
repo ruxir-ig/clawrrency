@@ -4,7 +4,7 @@
  * Implements minting, burning, and monetary policy for Shells currency.
  */
 
-import type { CurrencyConfig, MintingConfig, BurningConfig, Account, Transaction } from '../types/index.js';
+import type { CurrencyConfig, MintingConfig, Account, Transaction } from '../types/index.js';
 
 // Default Currency Configuration
 export const DEFAULT_CURRENCY_CONFIG: CurrencyConfig = {
@@ -211,8 +211,9 @@ export function calculateValidatorRewards(
 export function validateEconomicConstraints(
   transaction: Transaction,
   sender_balance: number,
-  current_supply: number
+  _current_supply?: number
 ): { valid: boolean; error?: string } {
+  // _current_supply reserved for future economic validations
   // Check for integer overflow
   if (transaction.amount > Number.MAX_SAFE_INTEGER) {
     return { valid: false, error: 'Amount too large' };
