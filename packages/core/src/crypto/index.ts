@@ -7,10 +7,15 @@
 
 import * as ed25519 from '@noble/ed25519';
 import { sha256 } from '@noble/hashes/sha256';
+import { sha512 } from '@noble/hashes/sha512';
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 
+// Configure ed25519 to use sha512
+ed25519.etc.sha512Sync = (...msgs) => sha512(ed25519.etc.concatBytes(...msgs));
+ed25519.etc.sha512Async = (...msgs) => Promise.resolve(ed25519.etc.sha512Sync(...msgs));
+
 // Re-export noble utilities
-export { ed25519, sha256, bytesToHex, hexToBytes };
+export { ed25519, sha256, sha512, bytesToHex, hexToBytes };
 
 // Key Pair Generation
 export interface KeyPair {
