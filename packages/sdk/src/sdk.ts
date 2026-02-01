@@ -1,25 +1,50 @@
-export interface SDKConfig {
-  validator_endpoint: string;
-  bot_private_key: string;
-}
+import { IdentityManager } from '@clawrrency/identity';
+import { InMemoryLedger } from '@clawrrency/ledger';
+import { SkillMarketplace } from '@clawrrency/openclaw';
+import { GitHubGovernance } from '@clawrrency/governance';
+import { PBFTValidator } from '@clawrrency/validator';
 
 export class ClawrrencySDK {
-  constructor(_config: SDKConfig) {
-    // TODO: Initialize SDK
+  identity: IdentityManager;
+  ledger: InMemoryLedger;
+  marketplace: SkillMarketplace;
+  governance?: GitHubGovernance;
+  validator?: PBFTValidator;
+
+  constructor(config: {
+    dataDir: string;
+    githubToken?: string;
+    repoOwner?: string;
+    repoName?: string;
+  }) {
+    this.identity = new IdentityManager(`${config.dataDir}/identities.json`);
+    this.ledger = new InMemoryLedger(`${config.dataDir}/ledger.json`);
+    this.marketplace = new SkillMarketplace(
+      this.ledger,
+      this.identity,
+      `${config.dataDir}/skills.json`
+    );
+
+    if (config.githubToken && config.repoOwner && config.repoName) {
+      this.governance = new GitHubGovernance({
+        github_token: config.githubToken,
+        repo_owner: config.repoOwner,
+        repo_name: config.repoName,
+        voting_period_days: 7,
+      });
+    }
   }
 
-  async getBalance(_public_key: string): Promise<number> {
-    // TODO: Query balance
-    return 0;
-  }
-
-  async transfer(_to: string, _amount: number): Promise<string> {
-    // TODO: Submit transfer transaction
-    throw new Error('Not implemented');
-  }
-
-  async createSkill(_skill: unknown): Promise<string> {
-    // TODO: Create skill
-    throw new Error('Not implemented');
+  async initialize(): Promise<void> {
+    await this.identity.initialize();
+    await this.ledger.initialize();
+    await this.marketplace.initialize();
   }
 }
+
+export type { Transaction, Account, Proposal, ProposalType } from '@clawrrency/core';
+export { BotWallet, IdentityManager } from '@clawrrency/identity';
+export { InMemoryLedger } from '@clawrrency/ledger';
+export { SkillMarketplace, SkillPackage } from '@clawrrency/openclaw';
+export { GitHubGovernance } from '@clawrrency/governance';
+export { PBFTValidator } from '@clawrrency/validator';

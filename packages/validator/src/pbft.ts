@@ -1,4 +1,4 @@
-import type { Transaction, ConsensusMessage, Block } from '@clawrrency/core';
+import type { Transaction, ConsensusMessage } from '@clawrrency/core';
 import { hashTransaction, verifySignature } from '@clawrrency/core';
 import type { Ledger } from '@clawrrency/ledger';
 
@@ -165,7 +165,7 @@ export class PBFTValidator {
     await this.handlePrePrepare(message, tx);
   }
 
-  async handlePrePrepare(message: ConsensusMessage, tx: Transaction): Promise<void> {
+  async handlePrePrepare(message: ConsensusMessage, _tx: Transaction): Promise<void> {
     if (message.type !== 'pre-prepare') return;
 
     const is_valid = await this.verifyMessage(message);

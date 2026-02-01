@@ -212,22 +212,32 @@ export class SkillMarketplace {
       return { success: false, error: 'Buyer account not found' };
     }
 
-    const tx: Omit<Transaction, 'signature'> = {
-      version: 1,
-      type: 'skill_purchase',
-      from: buyer,
-      to: listing.seller,
-      amount: listing.price,
-      nonce: buyerAccount.nonce + 1,
-      timestamp: Date.now(),
-      data: {
-        skill_id,
-        manifest_hash: skill.manifest_hash,
-        creator_pubkey: skill.created_by,
-        price: listing.price,
-        created_at: skill.created_at,
-      },
-    };
+      const tx: Omit<Transaction, 'signature'> = {
+        version: 1,
+        type: 'skill_purchase',
+        from: buyer,
+        to: listing.seller,
+        amount: listing.price,
+        nonce: buyerAccount.nonce + 1,
+        timestamp: Date.now(),
+        data: {
+          skill_id: skill.id,
+          manifest_hash: skill.manifest_hash,
+          manifest: {
+            name: skill.name,
+            description: skill.description,
+            version: skill.version,
+            type: skill.type,
+            dependencies: skill.dependencies,
+            license: skill.license,
+            files: skill.files.map(f => ({ path: f.path, hash: f.hash })),
+            entry_point: skill.entry_point,
+          },
+          creator_pubkey: skill.created_by,
+          price: listing.price,
+          created_at: skill.created_at,
+        },
+      };
 
     const signature = await signTransaction(tx, buyer_private_key);
     const result = await this.ledger.applyTransaction({ ...tx, signature });

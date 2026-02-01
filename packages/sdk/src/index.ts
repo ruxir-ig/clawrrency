@@ -1,1 +1,1 @@
-export * from './sdk.js';
+export { program } from './cli.js';
