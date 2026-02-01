@@ -11,10 +11,10 @@ import { sha512 } from '@noble/hashes/sha512';
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 
 // Configure ed25519 to use sha512
-const etc = ed25519.etc;
+const etc = ed25519.etc as { sha512Sync?: unknown; sha512Async?: unknown; concatBytes: (...msgs: Uint8Array[]) => Uint8Array } | undefined;
 if (etc) {
-  (etc as { sha512Sync: unknown }).sha512Sync = (...msgs: Uint8Array[]) => sha512(etc.concatBytes(...msgs));
-  (etc as { sha512Async: unknown }).sha512Async = (...msgs: Uint8Array[]) => Promise.resolve(etc.sha512Sync(...msgs));
+  (etc as { sha512Sync: (...msgs: Uint8Array[]) => Uint8Array }).sha512Sync = (...msgs) => sha512(etc.concatBytes(...msgs));
+  (etc as { sha512Async: (...msgs: Uint8Array[]) => Promise<Uint8Array> }).sha512Async = (...msgs) => Promise.resolve((etc as { sha512Sync: (...msgs: Uint8Array[]) => Uint8Array }).sha512Sync(...msgs));
 }
 
 // Re-export noble utilities

@@ -160,7 +160,7 @@ export class InMemoryLedger implements Ledger {
       return { success: false, error: 'Invalid transaction signature' };
     }
 
-    const economicCheck = validateEconomicConstraints(tx, sender.balance);
+    const economicCheck = validateEconomicConstraints(tx, sender.balance, 0);
     if (!economicCheck.valid) {
       return { success: false, error: economicCheck.error };
     }
