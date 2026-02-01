@@ -1,0 +1,33 @@
+{
+  "name": "@clawrrency/ledger",
+  "version": "0.1.0",
+  "description": "SQLite-based ledger and state management",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clawrrency/core": "workspace:*",
+    "better-sqlite3": "^9.4.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.9",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

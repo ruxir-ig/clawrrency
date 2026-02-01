@@ -1,0 +1,29 @@
+{
+  "name": "@clawrrency/validator-node",
+  "version": "0.1.0",
+  "description": "Standalone validator node application",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "clawrrency-validator": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "start": "node ./dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clawrrency/core": "workspace:*",
+    "@clawrrency/identity": "workspace:*",
+    "@clawrrency/ledger": "workspace:*",
+    "@clawrrency/validator": "workspace:*"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

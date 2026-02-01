@@ -1,0 +1,30 @@
+{
+  "name": "@clawrrency/cli",
+  "version": "0.1.0",
+  "description": "CLI tools for clawrrency",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "clawrrency": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clawrrency/core": "workspace:*",
+    "@clawrrency/identity": "workspace:*",
+    "@clawrrency/ledger": "workspace:*",
+    "@clawrrency/sdk": "workspace:*",
+    "commander": "^12.0.0"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@clawrrency/openclaw",
+  "version": "0.1.0",
+  "description": "OpenClaw skill trading integration",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clawrrency/core": "workspace:*",
+    "@clawrrency/identity": "workspace:*",
+    "@clawrrency/ledger": "workspace:*"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
